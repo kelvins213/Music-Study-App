@@ -9,7 +9,7 @@ class DBHelper{
     String path = join(databasePath, "music.db");
     Database database = await openDatabase(
       path,
-      version: 2,
+      version: 1,
       onCreate: onCreate,
       onUpgrade: onUpgrade,
     );
