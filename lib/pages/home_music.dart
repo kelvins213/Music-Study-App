@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music/data/DBHelper.dart';
 import 'package:music/data/data_request.dart';
-import 'package:music/data/music_contents.dart';
+import 'package:music/domain/music.dart';
 import 'package:sqflite/sqflite.dart';
 
 class HomeMusic extends StatefulWidget {
@@ -13,9 +13,7 @@ class HomeMusic extends StatefulWidget {
 
 class _HomeMusic extends State <HomeMusic> {
   @override
-
-  Database db = DBHelper().initDB(); //precisa do await
-  List musicObject = MusicDatabase.musicObjects;
+  Future<List<Music>> musicList = DataRequest().buildDatabase();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,16 +34,17 @@ class _HomeMusic extends State <HomeMusic> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
+              //precisa implementar o FutureBuilder
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: musicObject.length,
+              //itemCount: musicObject.length,
+              itemCount: 4,
               itemBuilder: (context, index) {
-                dynamic json = DataRequest().getData(id: index, db: db);
                 return Card(
                   child: Column(
                     children: [
                       Text(
-                        json['name'],
+                        'iai'
                       ),
                     ],
                   ),

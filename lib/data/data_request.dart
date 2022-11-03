@@ -1,14 +1,23 @@
+import 'package:music/data/DBHelper.dart';
+import 'package:music/domain/music.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataRequest{
 
-  getData({
-    required int id,
-    required Database db,
-    dynamic json,
-  }) async {
-    String sqlSearch = "SELECT * FROM StudyMusics WHERE id = ?";
-    json = await db.rawQuery(sqlSearch, [id]);
-    return json;
+  Future<List<Music>> buildDatabase() async {
+    DBHelper dbHelper = DBHelper();
+    Database db = await dbHelper.initDB();
+
+    String sql = "SELECT * FROM StudyMusics;";
+    final queryResult = await db.rawQuery(sql);
+    print("Query Result: $queryResult");
+    List<Music> musicList = <Music>[];
+
+    for (var json in queryResult) {
+      Music music = Music.fromJson(json);
+      musicList.add(music);
+    }
+
+    return musicList;
   }
 }
