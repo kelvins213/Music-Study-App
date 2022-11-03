@@ -11,8 +11,4 @@ class DataRequest{
     json = await db.rawQuery(sqlSearch, [id]);
     return json;
   }
-
-
-  }
-
 }

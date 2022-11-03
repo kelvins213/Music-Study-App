@@ -40,11 +40,12 @@ class _HomeMusic extends State <HomeMusic> {
               itemCount: musicObject.length,
               itemBuilder: (context, index) {
                 dynamic json = DataRequest().getData(id: index, db: db);
-
                 return Card(
                   child: Column(
                     children: [
-
+                      Text(
+                        json['name'],
+                      ),
                     ],
                   ),
                 );
