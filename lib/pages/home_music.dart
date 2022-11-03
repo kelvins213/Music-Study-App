@@ -13,7 +13,8 @@ class HomeMusic extends StatefulWidget {
 
 class _HomeMusic extends State <HomeMusic> {
   @override
-  Database db = DBHelper().initDB();
+
+  Database db = DBHelper().initDB(); //precisa do await
   List musicObject = MusicDatabase.musicObjects;
 
   Widget build(BuildContext context) {
