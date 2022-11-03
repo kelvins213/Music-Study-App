@@ -8,9 +8,9 @@ class DBHelper{
     String databasePath = await getDatabasesPath();
     String path = join(databasePath, "music.db");
     Database database = await openDatabase(
-        path,
-        version: 2,
-        onCreate: onCreate,
+      path,
+      version: 2,
+      onCreate: onCreate,
       onUpgrade: onUpgrade,
     );
     print(path);
@@ -19,8 +19,7 @@ class DBHelper{
 
   Future<FutureOr<void>> onCreate(Database db, int version) async {
     String sqlCreateMusic;
-
-    sqlCreateMusic = "create table StudyMusics(id int PRIMARY KEY, name varchar(100), link varchar(720), imageLink(720));";
+    sqlCreateMusic = "CREATE TABLE StudyMusics(id int PRIMARY KEY,name varchar(100),link varchar(200),imageLink(200))";
     await db.execute(sqlCreateMusic);
     await insertIntoMusicTable(db);
   }
@@ -45,5 +44,4 @@ class DBHelper{
       onCreate(db, newVersion);
     }
   }
-
 }
