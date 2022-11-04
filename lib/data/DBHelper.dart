@@ -19,7 +19,7 @@ class DBHelper{
 
   Future<FutureOr<void>> onCreate(Database db, int version) async {
     String sqlCreateMusic;
-    sqlCreateMusic = "CREATE TABLE StudyMusics(id int PRIMARY KEY,name varchar(100),link varchar(200),imageLink(200))";
+    sqlCreateMusic = "CREATE TABLE StudyMusics(id int PRIMARY KEY,name varchar(100),link varchar(200),imageLink varchar(200))";
     await db.execute(sqlCreateMusic);
     await insertIntoMusicTable(db);
   }
