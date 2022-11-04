@@ -40,7 +40,7 @@ class _HomeMusic extends State <HomeMusic> {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       //itemCount: musicObject.length,
-                      itemCount: 4,
+                      itemCount: musics.length,
                       itemBuilder: (context, index) {
                         return Card(
                           child: Column(
