@@ -25,10 +25,43 @@ class _HomeMusic extends State <HomeMusic> {
   //proxima meta: criar uma NavDrawer: Nela, o user tera a opcao de fazer sua propria play list
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        backgroundColor: Color(0xFFB73E3E),
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                border: Border.all(),
+              ),
+              padding: EdgeInsets.all(0.0),
+              child: Container(
+                //https://images2.alphacoders.com/261/thumb-1920-26102.jpg
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    AspectRatio(
+                      aspectRatio: 7/3,
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage('https://miro.medium.com/max/1400/0*FjF2hZ8cJQN9aBxk.jpg'),
+                        child: Text(""),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            returnListtitle(genreName: "Lofi", size: 24),
+            returnListtitle(genreName: "Hip Hop", size: 24),
+            returnListtitle(genreName: "Pop", size: 24),
+            returnListtitle(genreName: "Electronic", size: 24),
+            returnListtitle(genreName: "My Playlist", size: 24),
+          ],
+        ),
+      ),
       backgroundColor: Color(0xFF9F9F9F),
       appBar: AppBar(
         backgroundColor: Color(0xFF4F4F4F),
-        title: returnText(text: "Study Musics", size: 24),
+        title: returnText(text: "Study Musics", size: 24, color: Colors.white),
         centerTitle: true,
       ),
       body: ListView(
@@ -102,7 +135,7 @@ class _HomeMusic extends State <HomeMusic> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             returnIcon(icon: Icons.music_note, size: 50),
-                                            returnText(text: musics[index].name, size: 36),
+                                            returnText(text: musics[index].name, size: 36, color: Colors.white),
                                           ],
                                         ),
                                       ),
@@ -128,8 +161,8 @@ class _HomeMusic extends State <HomeMusic> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                returnText(text: "Enjoy Your Study Music!", size: 23),
-                returnText(text: "Copyright Ⓒ2022, All Rights Reserved.", size: 14),
+                returnText(text: "Enjoy Your Study Music!", size: 23, color: Colors.white),
+                returnText(text: "Copyright Ⓒ2022, All Rights Reserved.", size: 14, color: Colors.white),
               ],
             ),
           ),
@@ -138,13 +171,13 @@ class _HomeMusic extends State <HomeMusic> {
     );
   }
 
-  returnText({required String text, required double size}){
+  returnText({required String text, required double size, required Color color}){
     return Text(
       text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: size,
-        color: Colors.white,
+        color: color,
       ),
     );
   }
@@ -155,4 +188,21 @@ class _HomeMusic extends State <HomeMusic> {
       size: size,
     );
   }
+
+  onPressed(){
+
+  }
+
+  returnListtitle({required String genreName, required double size}){
+    return ListTile(
+      title: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFFEEEEEE),
+        ),
+        child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
 }
