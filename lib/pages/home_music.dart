@@ -22,19 +22,13 @@ class _HomeMusic extends State <HomeMusic> {
       throw "Could not launch $url";
     }
   }
-
+  //proxima meta: criar uma NavDrawer: Nela, o user tera a opcao de fazer sua propria play list
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF9F9F9F),
       appBar: AppBar(
         backgroundColor: Color(0xFF4F4F4F),
-        title: const Text(
-          'Study Musics',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-          ),
-        ),
+        title: returnText(text: "Study Musics", size: 24),
         centerTitle: true,
       ),
       body: ListView(
@@ -56,9 +50,9 @@ class _HomeMusic extends State <HomeMusic> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        returnIcon(icon: Icons.book),
-                        returnIcon(icon: Icons.play_arrow),
-                        returnIcon(icon: Icons.pause_circle),
+                        returnIcon(icon: Icons.book, size: 50),
+                        returnIcon(icon: Icons.play_arrow, size: 50),
+                        returnIcon(icon: Icons.pause_circle, size: 50),
                       ],
                     ),
                   ),
@@ -107,18 +101,8 @@ class _HomeMusic extends State <HomeMusic> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Icon(
-                                              Icons.music_note,
-                                              size: 50,
-                                            ),
-                                            Text(
-                                              '${musics[index].name}',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 36,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                            returnIcon(icon: Icons.music_note, size: 50),
+                                            returnText(text: musics[index].name, size: 36),
                                           ],
                                         ),
                                       ),
@@ -165,11 +149,10 @@ class _HomeMusic extends State <HomeMusic> {
     );
   }
 
-  returnIcon({required IconData icon}){
+  returnIcon({required IconData icon, required double size}){
     return Icon(
       icon,
-      size: 50,
+      size: size,
     );
   }
-
 }

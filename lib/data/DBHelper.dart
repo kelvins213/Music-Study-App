@@ -41,7 +41,6 @@ class DBHelper{
     await db.execute(sqlMusic);
     sqlMusic = "insert into StudyMusics(id, name, link, imageLink) values (6,'Rick and Morty', 'https://youtu.be/br8qyUSbuDI', 'https://static.itapemafm.com.br/s3fs-public/styles/itapema_blog_post_header/public/graphql-upload-files/rick%20and%20morty%20temporada%205_1.jpg');";
     await db.execute(sqlMusic);
-
   }
 
   Future<void> onUpgrade(Database db, int oldVersion, int newVersion) async {
