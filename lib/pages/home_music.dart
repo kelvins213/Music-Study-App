@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:music/data/data_request.dart';
 import 'package:music/domain/music.dart';
+import 'package:music/widget/genre_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeMusic extends StatefulWidget {
@@ -13,6 +15,8 @@ class HomeMusic extends StatefulWidget {
 class _HomeMusic extends State <HomeMusic> {
   @override
   Future<List<Music>> musicList = DataRequest().buildDatabase();
+  Future<List> musicGenreList = DataRequest().retrieveGenreDatas();
+  int count = -1;
 
   Future<void> launchUrlMusic({required String urlString}) async{
     final Uri url = Uri.parse(urlString);
@@ -22,7 +26,7 @@ class _HomeMusic extends State <HomeMusic> {
       throw "Could not launch $url";
     }
   }
-  //proxima meta: criar uma NavDrawer: Nela, o user tera a opcao de fazer sua propria play list
+
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
@@ -47,7 +51,6 @@ class _HomeMusic extends State <HomeMusic> {
                 ),
               ),
             ),
-            //esse dados devem ser recuperados do banco. Para isso, utilizar Futurebuilder e Listview.builder
             returnListTile(genreName: "Lofi", size: 24),
             returnListTile(genreName: "Hip Hop", size: 24),
             returnListTile(genreName: "Pop", size: 24),
@@ -64,6 +67,42 @@ class _HomeMusic extends State <HomeMusic> {
       ),
       body: ListView(
         children: [
+          FutureBuilder <List>(
+            future: musicGenreList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List presentMusicGenreList = snapshot.data ?? [];
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    height: 64,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(width: 16);
+                      },
+                      itemBuilder: (context, index) {
+                        List lista = presentMusicGenreList[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Row(
+                            children: [
+                              returnElevatedButton(list: lista, genreName: lista[0].genreName, size: 18, color: Color(0xFF000000))
+                            ],
+                          ),
+                        );
+                        },
+                      itemCount: presentMusicGenreList.length,
+                    ),
+                  ),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -187,10 +226,6 @@ class _HomeMusic extends State <HomeMusic> {
     );
   }
 
-  onPressed(){
-
-  }
-
   returnListTile({required String genreName, required double size}){
     return ListTile(
       title: ElevatedButton(
@@ -198,9 +233,33 @@ class _HomeMusic extends State <HomeMusic> {
           backgroundColor: Color(0xFFEEEEEE),
         ),
         child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
-        onPressed: onPressed,
+        onPressed: onPressed1,
       ),
     );
   }
+
+  returnElevatedButton({required List list, required String genreName, required double size, required Color color}){
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xFFEEEEEE),
+      ),
+      child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
+      onPressed: () => onPressed(genreList: list),
+    );
+  }
+
+  onPressed({
+    required List genreList,
+  }){
+    Navigator.push(context,
+      MaterialPageRoute(
+          builder: (context) {
+            return GenrePage(musicGenreList: genreList);
+          }
+      ),
+    );
+  }
+
+  onPressed1(){}
 
 }

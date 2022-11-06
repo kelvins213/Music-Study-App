@@ -6,7 +6,7 @@ class DBHelper{
 
   initDB() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, "music2.db");
+    String path = join(databasePath, "music3.db");
     Database database = await openDatabase(
       path,
       version: 2,
@@ -22,6 +22,7 @@ class DBHelper{
     sqlCreateMusic = "CREATE TABLE StudyMusics(id int PRIMARY KEY,name varchar(100),link varchar(200), imageLink varchar(200))";
     await db.execute(sqlCreateMusic);
     sqlCreateMusic = "create table DrawerGenres(id int PRIMARY KEY, genreName varchar(100), musicName varchar(60), musicSinger varchar(60), linkMusicWallpaper varchar(100), youtubeURL varchar(100))";
+    await db.execute(sqlCreateMusic);
     await insertIntoTables(db);
   }
 
