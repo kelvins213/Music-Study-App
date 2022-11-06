@@ -50,7 +50,7 @@ class DBHelper{
     await db.execute(sqlGenre);
     sqlGenre = "insert into DrawerGenres(id, genreName, musicName, musicSinger, linkMusicWallpaper, youtubeURL) values (2, 'Pop', 'Cheerleader', 'Felix Jaehn', 'https://upload.wikimedia.org/wikipedia/commons/6/6e/JU_Cheerleaders.jpg', 'https://youtu.be/rXF9ziZ3AU4?list=RDGMEMQ1dJ7wXfLlqCjwV0xfSNbA')";
     await db.execute(sqlGenre);
-    sqlGenre = "insert into DrawerGenres(id, genreName, musicName, musicSinger, linkMusicWallpaper, youtubeURL) values (3, 'Electronic', 'Lofi Hip Hop', 'Instrumental', 'https://c4.wallpaperflare.com/wallpaper/908/34/383/lofi-digital-anthro-hd-wallpaper-preview.jpg', 'https://youtu.be/jfKfPfyJRdk')";
+    sqlGenre = "insert into DrawerGenres(id, genreName, musicName, musicSinger, linkMusicWallpaper, youtubeURL) values (3, 'Electronic', 'Electronic', 'Instrumental', 'https://c4.wallpaperflare.com/wallpaper/908/34/383/lofi-digital-anthro-hd-wallpaper-preview.jpg', 'https://youtu.be/jfKfPfyJRdk')";
     await db.execute(sqlGenre);
     sqlGenre = "insert into DrawerGenres(id, genreName, musicName, musicSinger, linkMusicWallpaper, youtubeURL) values (4, 'Hip Hop', 'Lucid Dreams', 'Juice WRLD', 'https://i.pinimg.com/736x/09/f8/f3/09f8f3fe8f6020afd034531d78a7637f.jpg', 'https://youtu.be/mzB1VGEGcSU?list=PLDUJWPwQe9iOVT5Y1WEL3E7kHOBTGiCvW')";
     await db.execute(sqlGenre);
