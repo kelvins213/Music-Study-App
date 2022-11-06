@@ -26,16 +26,13 @@ class _HomeMusic extends State <HomeMusic> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        backgroundColor: Color(0xFFB73E3E),
+        backgroundColor: Color(0xFF9F9F9F),
+        //implementar o Futurebuilder aqui
         child: ListView(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
-                border: Border.all(),
-              ),
               padding: EdgeInsets.all(0.0),
               child: Container(
-                //https://images2.alphacoders.com/261/thumb-1920-26102.jpg
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
@@ -50,11 +47,12 @@ class _HomeMusic extends State <HomeMusic> {
                 ),
               ),
             ),
-            returnListtitle(genreName: "Lofi", size: 24),
-            returnListtitle(genreName: "Hip Hop", size: 24),
-            returnListtitle(genreName: "Pop", size: 24),
-            returnListtitle(genreName: "Electronic", size: 24),
-            returnListtitle(genreName: "My Playlist", size: 24),
+            //esse dados devem ser recuperados do banco. Para isso, utilizar Futurebuilder e Listview.builder
+            returnListTile(genreName: "Lofi", size: 24),
+            returnListTile(genreName: "Hip Hop", size: 24),
+            returnListTile(genreName: "Pop", size: 24),
+            returnListTile(genreName: "Electronic", size: 24),
+            returnListTile(genreName: "My Playlist", size: 24),
           ],
         ),
       ),
@@ -193,7 +191,7 @@ class _HomeMusic extends State <HomeMusic> {
 
   }
 
-  returnListtitle({required String genreName, required double size}){
+  returnListTile({required String genreName, required double size}){
     return ListTile(
       title: ElevatedButton(
         style: ElevatedButton.styleFrom(
