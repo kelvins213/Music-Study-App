@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite:
+  http:
   audioplayers: ^1.1.1
 
 
