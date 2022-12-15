@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:music/data/api/music_api_retrieve_json.dart';
 import 'package:music/data/data_request.dart';
 import 'package:music/domain/music.dart';
+import 'package:music/pages/music_json.dart';
 import 'package:music/widget/genre_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,7 +18,7 @@ class _HomeMusic extends State <HomeMusic> {
   @override
   Future<List<Music>> musicList = DataRequest().buildDatabase();
   Future<List> musicGenreList = DataRequest().retrieveGenreDatas();
-  int count = -1;
+  Future<List> musicJSONS = MusicApi().listDatas(); //o problema tá aqui
 
   Future<void> launchUrlMusic({required String urlString}) async{
     final Uri url = Uri.parse(urlString);
@@ -188,9 +190,26 @@ class _HomeMusic extends State <HomeMusic> {
                       return const Center(child: CircularProgressIndicator());
                     },
                 ),
+
+                //interage com a API
+                FutureBuilder <List>(
+                  future:  musicJSONS,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List musics = snapshot.data ?? [];
+                      return ElevatedButton(
+                        onPressed: () => onPressedJSON(musicsJSON: musics),
+                        child: Text("Music JSON"),
+                      );
+                    } else {
+                      return Center(child: const CircularProgressIndicator());
+                    }
+                  },
+                ),
               ],
             ),
           ),
+
           Container(
             height: 60,
             width: MediaQuery.of(context).size.width,
@@ -261,5 +280,15 @@ class _HomeMusic extends State <HomeMusic> {
   }
 
   onPressed1(){}
+
+  onPressedJSON({required List<dynamic> musicsJSON}){
+    Navigator.push(context,
+      MaterialPageRoute(
+          builder: (context) {
+            return JsonMusic(musicJSONS: musicsJSON);
+          }
+      ),
+    );
+  }
 
 }
