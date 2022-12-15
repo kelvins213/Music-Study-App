@@ -230,7 +230,7 @@ class _HomeMusic extends State <HomeMusic> {
     return ListTile(
       title: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFFEEEEEE),
+          primary: Color(0xFFEEEEEE),
         ),
         child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
         onPressed: onPressed1,
@@ -241,7 +241,7 @@ class _HomeMusic extends State <HomeMusic> {
   returnElevatedButton({required List list, required String genreName, required double size, required Color color}){
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFEEEEEE),
+        primary: Color(0xFFEEEEEE),
       ),
       child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
       onPressed: () => onPressed(genreList: list),
