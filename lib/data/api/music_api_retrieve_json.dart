@@ -5,13 +5,17 @@ import 'package:http/http.dart';
 
 class MusicApi {
 
-  String baseURL = "https://musicappapi.fhyvugvfjudgf.repl.co";
+  final String baseURL = "https://musicappapi.fhyvugvfjudgf.repl.co";
 
   Future<List> listDatas() async {
 
     Uri url = Uri.http(baseURL, "/resgatarJSON");
     Response response = await http.get(url);
     List <dynamic> jsonList = <dynamic>[];
+
+    print(response.statusCode);
+    print(response.body);
+
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
