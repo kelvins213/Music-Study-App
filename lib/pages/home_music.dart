@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:music/data/api/music_api_retrieve_json.dart';
-import 'package:music/data/data_request.dart';
+import 'package:music/data/db/data_request.dart';
 import 'package:music/domain/music.dart';
-import 'package:music/pages/music_json.dart';
+import 'package:music/domain/playlist.dart';
+import 'package:music/pages/music_playlist.dart';
 import 'package:music/widget/genre_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +17,7 @@ class _HomeMusic extends State <HomeMusic> {
   @override
   Future<List<Music>> musicList = DataRequest().buildDatabase();
   Future<List> musicGenreList = DataRequest().retrieveGenreDatas();
-  Future<List> musicJSONS = MusicApi().listDatas(); //o problema tá aqui
+  Future<List<Playlist>> musicJSONS = PlaylistAPI().listDatas();
 
   Future<void> launchUrlMusic({required String urlString}) async{
     final Uri url = Uri.parse(urlString);
@@ -33,7 +32,6 @@ class _HomeMusic extends State <HomeMusic> {
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Color(0xFF9F9F9F),
-        //implementar o Futurebuilder aqui
         child: ListView(
           children: [
             DrawerHeader(
@@ -61,9 +59,9 @@ class _HomeMusic extends State <HomeMusic> {
           ],
         ),
       ),
-      backgroundColor: Color(0xFF9F9F9F),
+      backgroundColor: const Color(0xFF9F9F9F),
       appBar: AppBar(
-        backgroundColor: Color(0xFF4F4F4F),
+        backgroundColor: const Color(0xFF4F4F4F),
         title: returnText(text: "Study Musics", size: 24, color: Colors.white),
         centerTitle: true,
       ),
@@ -78,25 +76,59 @@ class _HomeMusic extends State <HomeMusic> {
                   scrollDirection: Axis.horizontal,
                   child: Container(
                     height: 64,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) {
-                        return SizedBox(width: 16);
-                      },
-                      itemBuilder: (context, index) {
-                        List lista = presentMusicGenreList[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Row(
-                            children: [
-                              returnElevatedButton(list: lista, genreName: lista[0].genreName, size: 18, color: Color(0xFF000000))
-                            ],
-                          ),
-                        );
-                        },
-                      itemCount: presentMusicGenreList.length,
+                    child: Row(
+                      children: [
+                        ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) {
+                            return SizedBox(width: 16);
+                          },
+                          itemBuilder: (context, index) {
+                            List lista = presentMusicGenreList[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Row(
+                                children: [
+                                  returnElevatedButton(list: lista, genreName: lista[0].genreName, size: 18, color: Color(0xFF000000))
+                                ],
+                              ),
+                            );
+                            },
+                          itemCount: presentMusicGenreList.length,
+                        ),
+                        FutureBuilder<List>(
+                          future: musicJSONS,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List playlistJSON = snapshot.data ?? [];
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                    onPressed: () => onPressedJSON(musicsJSON: playlistJSON),
+                                    style: ElevatedButton.styleFrom(
+                                      side: BorderSide(
+                                        color: Colors.black,
+                                      ),
+                                      primary: Color(0xFF777777),
+                                    ),
+                                    child: Text(
+                                      "Playlist",
+                                      style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Center(child: CircularProgressIndicator());
+                              }
+                            },
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -190,22 +222,6 @@ class _HomeMusic extends State <HomeMusic> {
                       return const Center(child: CircularProgressIndicator());
                     },
                 ),
-
-                //interage com a API
-                FutureBuilder <List>(
-                  future:  musicJSONS,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List musics = snapshot.data ?? [];
-                      return ElevatedButton(
-                        onPressed: () => onPressedJSON(musicsJSON: musics),
-                        child: Text("Music JSON"),
-                      );
-                    } else {
-                      return Center(child: const CircularProgressIndicator());
-                    }
-                  },
-                ),
               ],
             ),
           ),
@@ -249,7 +265,7 @@ class _HomeMusic extends State <HomeMusic> {
     return ListTile(
       title: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Color(0xFFEEEEEE),
+          primary: const Color(0xFFEEEEEE),
         ),
         child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
         onPressed: onPressed1,
@@ -260,7 +276,7 @@ class _HomeMusic extends State <HomeMusic> {
   returnElevatedButton({required List list, required String genreName, required double size, required Color color}){
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Color(0xFFEEEEEE),
+        primary: const Color(0xFFEEEEEE),
       ),
       child: returnText(text: genreName, size: size, color: Color(0xFF000000)),
       onPressed: () => onPressed(genreList: list),
@@ -281,14 +297,13 @@ class _HomeMusic extends State <HomeMusic> {
 
   onPressed1(){}
 
-  onPressedJSON({required List<dynamic> musicsJSON}){
+  onPressedJSON({required List musicsJSON}){
     Navigator.push(context,
       MaterialPageRoute(
           builder: (context) {
-            return JsonMusic(musicJSONS: musicsJSON);
+            return JsonMusic(musicJSONsObjects: musicsJSON);
           }
       ),
     );
   }
-
 }
