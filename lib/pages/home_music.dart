@@ -3,7 +3,7 @@ import 'package:music/data/api/music_api_retrieve_json.dart';
 import 'package:music/data/db/data_request.dart';
 import 'package:music/domain/music.dart';
 import 'package:music/domain/playlist.dart';
-import 'package:music/pages/music_json.dart';
+import 'package:music/pages/music_playlist.dart';
 import 'package:music/widget/genre_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
