@@ -11,24 +11,22 @@ class PlaylistAPI {
 
     Uri url = Uri.http(baseURL, "/resgatarJSON");
     Response response = await http.get(url);
-    List <dynamic> jsonList = <dynamic>[];
     List <Playlist> playlistContents = <Playlist> [];
 
     print(response.statusCode);
     print(response.body);
 
-
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
+      print("$result \n");
+
       for (var json in result) {
-        jsonList.add(json);
-      }
-      for (var json in jsonList) {
         Playlist play = Playlist.fromJson(json);
         playlistContents.add(play);
       }
+      print("$playlistContents \n");
     }
-    //essa variável jsonList tem os JSONs retornados pela API em javascript
+
     return playlistContents;
   }
 }

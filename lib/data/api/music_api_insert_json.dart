@@ -1,13 +1,10 @@
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:music/data/db/DBHelper.dart';
-import 'package:music/data/api/music_api_retrieve_json.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MusicsDatasApi {
 
   final String sql = "select * from StudyMusics";
-  //final String _baseUrl = "https://studyappapi.fhyvugvfjudgf.repl.co/";
   final String _baseUrl = "studyappapi.fhyvugvfjudgf.repl.co/";
   
   Future <void> buildDatabase() async {
@@ -34,5 +31,4 @@ class MusicsDatasApi {
       }
     */
   }
-
 }
