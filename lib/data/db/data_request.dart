@@ -1,4 +1,4 @@
-import 'package:music/data/DBHelper.dart';
+import 'package:music/data/db/DBHelper.dart';
 import 'package:music/domain/genre.dart';
 import 'package:music/domain/music.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,7 +11,6 @@ class DataRequest{
 
     String sql = "SELECT * FROM StudyMusics;";
     final queryResult = await db.rawQuery(sql);
-    print("Query Result: $queryResult");
 
     List<Music> musicList = <Music>[];
 

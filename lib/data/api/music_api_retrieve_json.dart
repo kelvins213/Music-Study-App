@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 
 class MusicApi {
 
-  final String baseURL = "https://musicappapi.fhyvugvfjudgf.repl.co";
+  final String baseURL = "musicappapi.fhyvugvfjudgf.repl.co";
 
   Future<List> listDatas() async {
 
