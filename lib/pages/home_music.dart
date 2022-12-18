@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music/data/api/music_api_retrieve_json.dart';
+import 'package:music/data/api/playlist_api.dart';
 import 'package:music/data/db/data_request.dart';
 import 'package:music/domain/music.dart';
 import 'package:music/domain/playlist.dart';
@@ -108,19 +108,9 @@ class _HomeMusic extends State <HomeMusic> {
                                   child: ElevatedButton(
                                     onPressed: () => onPressedJSON(musicsJSON: playlistJSON),
                                     style: ElevatedButton.styleFrom(
-                                      side: BorderSide(
-                                        color: Colors.black,
-                                      ),
-                                      primary: Color(0xFF777777),
+                                      primary: const Color(0xFFEEEEEE),
                                     ),
-                                    child: Text(
-                                      "Playlist",
-                                      style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                    child: returnText(text: "Playlist", size: 18, color: Color(0xFF000000)),
                                   ),
                                 );
                               } else {
