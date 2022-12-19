@@ -13,12 +13,17 @@ class JsonMusic extends StatefulWidget {
 
 class _JsonMusic extends State <JsonMusic>{
   @override
+
   TextEditingController musicNameController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   TextEditingController thumbnailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController updateController = TextEditingController();
+  TextEditingController updateMusicController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  final _updateFormKey = GlobalKey<FormState>();
+
   Future<void> launchUrlMusic({required String urlString}) async{
     final Uri url = Uri.parse(urlString);
     if (await canLaunchUrl(url)) {
@@ -91,7 +96,8 @@ class _JsonMusic extends State <JsonMusic>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       returnAddMinusBottons(textDialog: "Inserir nova musica", buttonText: "Adicionar", icon: Icons.add, action: 0),
-                      returnAddMinusBottons(textDialog: "Deletar musica", buttonText: "Deletar", icon: Icons.remove, action: 1),
+                      returnUpdateDialog(icon: Icons.update),
+                      returnAddMinusBottons(textDialog: "Deletar musica", buttonText: "Deletar", icon: Icons.remove, action: 2),
                     ],
                   ),
                 ),
@@ -128,7 +134,6 @@ class _JsonMusic extends State <JsonMusic>{
                         onPressed: (){
                           if (_formKey.currentState!.validate()) {
                             String checkInfo = nameController.text;
-                            print(musicNameController.text);
                             if (checkInfo.isEmpty) {
                               PlaylistAPI().insertMusicDatas(musicName: musicNameController.text, url: urlController.text, thumbnail: thumbnailController.text);
                               musicNameController.text = ""; urlController.text = ""; thumbnailController.text = "";
@@ -213,29 +218,123 @@ class _JsonMusic extends State <JsonMusic>{
           ),
         ],
       );
-    } else {
-      return Column(
-        children: [
-          TextFormField(
-            decoration: InputDecoration(
-              hintText: "Digite o nome da musica",
-            ),
-            validator: (value) {
-              //a variavel value possui o nome da musica digitada pelo usuario
-              if (value == null || value.isEmpty) {
-                return textError;
-              }
-              return null;
-            },
-            controller: nameController,
-          ),
-        ],
-      );
     }
+    else {
+        return Column(
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "Digite o nome da musica",
+              ),
+              validator: (value) {
+                //a variavel value possui o nome da musica digitada pelo usuario
+                if (value == null || value.isEmpty) {
+                  return textError;
+                }
+                return null;
+              },
+              controller: nameController,
+            ),
+          ],
+        );
+      }
+    }
+
+
+  returnUpdateDialog({required IconData icon}){
+    return ElevatedButton(
+        onPressed: (){
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Column(
+                  children: [
+                    AlertDialog(
+                      actions: <Widget>[
+
+                      ],
+                      content: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(onPressed: (){returnUpdateForm(oldText: "Nome velho", newText: "Nome atual", type: "nome");}, child: const Text("Atualizar nome da musica", style: TextStyle(fontSize: 18),)),
+                            ElevatedButton(onPressed: (){returnUpdateForm(oldText: "Url velho", newText: "Url atual", type: "url",);}, child: const Text("Atualizar url da musica", style: TextStyle(fontSize: 18),)),
+                            ElevatedButton(onPressed: (){returnUpdateForm(oldText: "Thumbnail velha" , newText: "Thumbnail atual", type: "thumb");}, child: const Text("Atualizar thumbnail da musica", style: TextStyle(fontSize: 18),)),],
+                      ),
+                    ),
+                  ],
+                );
+              }
+          );
+        },
+        child: Icon(
+          icon,
+          size: 50,
+          color: const Color(0xFF4F4F4F),
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          primary: const Color(0xFFEEEEEE),
+        ),
+    );
   }
+
+  returnUpdateForm({required String oldText, required String newText, required String type}){
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            actions: <Widget> [
+              ElevatedButton(
+                onPressed: () {
+                  if (_updateFormKey.currentState!.validate()) {
+                    PlaylistAPI().atualizarMusica(oldText: updateController.text, newText: updateMusicController.text, type: type);
+                    updateController.text = "";
+                    updateMusicController.text = "";
+                    return Navigator.of(context).pop();
+                  }
+                },
+                child: const Text("Atualizar"),
+              ),
+            ],
+            content: Form(
+              key: _updateFormKey,
+              child: Column(
+                  children: [
+                    TextFormField(
+                      controller: updateController,
+                      decoration: InputDecoration(
+                        hintText: oldText,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Campo Vazio";
+                        }
+                        return null;
+                        },
+                      ),
+                    TextFormField(
+                      controller: updateMusicController,
+                      decoration: InputDecoration(
+                        hintText: newText,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Campo Vazio";
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+          );
+        }
+    );
+  }
+
 
   onPressed({required String musicLink}){
     launchUrlMusic(urlString: musicLink);
   }
-
 }
